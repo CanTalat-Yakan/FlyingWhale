@@ -12,24 +12,6 @@ public class BuildScript
         Process.Start(@"Builds");
     }
 
-    [MenuItem("Build/Build Clients Only", false, 101)]
-    public static void BuildClientsOnly()
-    {
-        BuildWindowsClient();
-        BuildWebGLClient();
-    }
-    [MenuItem("Build/Build Server Only", false, 102)]
-    public static void BuildServerOnly()
-    {
-        BuildWindowsServer();
-        BuildLinuxServer();
-    }
-    [MenuItem("Build/Build Windows Only", false, 102)]
-    public static void BuildWindowsOnly()
-    {
-        BuildWindowsServer();
-        BuildWindowsClient();
-    }
     [MenuItem("Build/Build All", false, 200)]
     public static void BuildAll()
     {
@@ -40,7 +22,7 @@ public class BuildScript
     }
 
 
-    [MenuItem("Build/Client (WebGL)", false, 20)]
+    [MenuItem("Build/Client (WebGL)", false, 21)]
     public static void BuildWebGLClient()
     {
         if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WebGL)
@@ -55,7 +37,7 @@ public class BuildScript
 
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows);
     }
-    [MenuItem("Build/Client (Windows)", false, 21)]
+    [MenuItem("Build/Client (Windows)", false, 20)]
     public static void BuildWindowsClient()
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();

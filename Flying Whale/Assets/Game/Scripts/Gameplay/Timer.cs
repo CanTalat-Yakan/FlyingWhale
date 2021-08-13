@@ -17,7 +17,11 @@ public class Timer : MonoBehaviour
         {
             m_timeValue -= Time.deltaTime;
         }
-        else m_timeValue = 0;
+        else
+        {
+            m_timeValue = 0;
+            GameManager.Instance.GameOver();
+        }
 
         DisplayTime(m_timeValue);
     }

@@ -6,28 +6,28 @@ public class PrefabPool : MonoBehaviour
 {
     [SerializeField] GameObject prefab;
     [SerializeField] int poolSize;
-    internal Stack<MeshInfo> pool;
+    internal Stack<GameObject> pool;
 
     void Awake()
     {
-        pool = new Stack<MeshInfo>();
+        pool = new Stack<GameObject>();
         CreateInstance();
     }
 
     void CreateInstance()
     {
         for (int i = 0; i < poolSize; i++)
-            pool.Push(GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity, transform).GetComponent<MeshInfo>());
+            pool.Push(GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity, transform));
 
         Debug.Log($"Instanced  {poolSize} GameObjects");
     }
 
-    public void Add(MeshInfo obj)
+    public void Add(GameObject obj)
     {
         pool.Push(obj);
     }
 
-    public MeshInfo Get()
+    public GameObject Get()
     {
         if (pool.Count == 0)
             CreateInstance();

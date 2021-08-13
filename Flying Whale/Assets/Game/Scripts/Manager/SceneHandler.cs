@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Mirror;
 
 public class SceneHandler : MonoBehaviour
 {
@@ -78,10 +77,5 @@ public class SceneHandler : MonoBehaviour
 #else
         Application.Quit();
 #endif
-    }
-
-    public static void Leave()
-    {
-        NetworkManager.singleton.StopClient();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] internal LayerMask m_IgnoreLayer;
     [SerializeField] internal Camera m_MainCamera;
     internal GameObject m_Player;
+    internal int[] ItemCounter = new int[4];
 
     void Awake()
     {
@@ -20,10 +22,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        LOCKED = false;
 
         if (m_MainCamera is null)
             m_MainCamera = Camera.main;
@@ -59,6 +57,11 @@ public class GameManager : MonoBehaviour
             if (SceneHandler.IsSceneLoaded("Options"))
                 SceneHandler.UnloadScene("Options");
         }
+    }
+
+    internal void PickedItem(int _i)
+    {
+        ItemCounter[_i]++;
     }
 
     internal RaycastHit HitRayCast(float _maxDistance, Ray? _ray = null)

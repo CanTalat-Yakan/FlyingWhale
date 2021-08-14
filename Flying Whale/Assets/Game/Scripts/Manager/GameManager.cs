@@ -11,7 +11,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] internal LayerMask m_IgnoreLayer;
     [SerializeField] internal Camera m_MainCamera;
     internal GameObject m_Player;
-    internal int[] ItemCounter = new int[4];
+    internal int[] m_itemCounter = new int[4];
+    [SerializeField] bool m_specialItemPicked;
+    [SerializeField] bool m_whaleTimeFinished;
 
     void Awake()
     {
@@ -25,6 +27,34 @@ public class GameManager : MonoBehaviour
 
         if (m_MainCamera is null)
             m_MainCamera = Camera.main;
+
+        StartCoroutine(Loop());
+    }
+
+    IEnumerator Loop()
+    {
+        SceneHandler.AddScene("TestingScene1");
+        yield return new WaitUntil(() => m_specialItemPicked);
+        SceneHandler.UnloadScene("TestingScene1");
+        m_specialItemPicked = false;
+
+        SceneHandler.AddScene("TestingScene2");
+        yield return new WaitUntil(() => m_whaleTimeFinished);
+        SceneHandler.UnloadScene("TestingScene2");
+        m_whaleTimeFinished = false;
+
+        SceneHandler.AddScene("TestingScene1");
+        yield return new WaitUntil(() => m_specialItemPicked);
+        SceneHandler.UnloadScene("TestingScene1");
+        m_specialItemPicked = false;
+
+        SceneHandler.AddScene("TestingScene2");
+        yield return new WaitUntil(() => m_whaleTimeFinished);
+        SceneHandler.UnloadScene("TestingScene2");
+        m_whaleTimeFinished = false;
+
+
+        yield return null;
     }
 
     void Update()
@@ -59,10 +89,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    internal void PickedItem(int _i)
-    {
-        ItemCounter[_i]++;
-    }
+    internal void PickedItem(int _i) { m_itemCounter[_i]++; }
+
+    internal void PickedItemSpecial() { m_specialItemPicked = true; }
+    internal void WhaleTimeFinished() { m_whaleTimeFinished = true; }
 
     internal RaycastHit HitRayCast(float _maxDistance, Ray? _ray = null)
     {

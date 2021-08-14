@@ -21,6 +21,9 @@ public class ItemPicker : MonoBehaviour
             Picked(2, other.gameObject);
         if (other.gameObject.CompareTag("Item4"))
             Picked(3, other.gameObject);
+
+        if(other.gameObject.CompareTag("ItemSpecial"))
+            GameManager.Instance.PickedItemSpecial();
     }
 
     void Picked(int _index, GameObject _obj)

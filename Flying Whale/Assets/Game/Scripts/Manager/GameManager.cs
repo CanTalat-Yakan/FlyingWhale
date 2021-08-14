@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] internal LayerMask m_IgnoreLayer;
     [SerializeField] internal Camera m_MainCamera;
     [SerializeField] internal GameObject m_Player;
+    [Range(0, 1)]
+    [SerializeField] internal float m_WindStrength;
     [Space]
     internal int[] m_itemCounter = new int[4];
     [SerializeField] bool m_specialItemPicked;
@@ -35,20 +37,21 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Loop()
     {
+        m_WindStrength = 0;
         SceneHandler.AddScene("Island1");
         yield return new WaitUntil(() => m_specialItemPicked);
         SceneHandler.UnloadScene("Island1");
-        m_specialItemPicked = false;
-        m_Player.transform.position = Vector3.zero;
-        m_Player.transform.rotation = Quaternion.identity;
+        m_specialItemPicked = false; 
+        ResetPlayer();
 
+        m_WindStrength = 0.15f;
         SceneHandler.AddScene("Whale");
         yield return new WaitUntil(() => m_whaleTimeFinished);
         SceneHandler.UnloadScene("Whale");
         m_whaleTimeFinished = false;
-        m_Player.transform.position = Vector3.zero;
-        m_Player.transform.rotation = Quaternion.identity;
+        ResetPlayer();
 
+        m_WindStrength = 0;
         SceneHandler.AddScene("Island1");
         yield return new WaitUntil(() => m_specialItemPicked);
 
@@ -64,10 +67,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = LOCKED ? 0 : 1;
     }
 
-    public void GameOver()
-    {
-        Debug.Log("Game Over");
-    }
+    public void GameOver() { Debug.Log("Game Over"); }
 
     #region Predefined 
     void OptionsOverlay()
@@ -98,6 +98,12 @@ public class GameManager : MonoBehaviour
 
     internal void PickedItemSpecial() { m_specialItemPicked = true; }
     internal void WhaleTimeFinished() { m_whaleTimeFinished = true; }
+
+    internal void ResetPlayer()
+    {
+        m_Player.transform.position = Vector3.zero;
+        m_Player.transform.rotation = Quaternion.identity;
+    }
 
     internal RaycastHit HitRayCast(float _maxDistance, Ray? _ray = null)
     {

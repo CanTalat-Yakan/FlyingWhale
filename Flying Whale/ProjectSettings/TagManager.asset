@@ -9,6 +9,7 @@ TagManager:
   - Item2
   - Item3
   - Item4
+  - ItemSpecial
   layers:
   - Default
   - TransparentFX

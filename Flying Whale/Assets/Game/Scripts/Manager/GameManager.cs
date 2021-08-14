@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] internal bool LOCKED = false;
     [SerializeField] internal LayerMask m_IgnoreLayer;
     [SerializeField] internal Camera m_MainCamera;
+    [SerializeField] internal CinemachineVirtualCamera m_CMVCamera;
+    [SerializeField] internal StarterAssets.ThirdPersonController m_controller;
     [SerializeField] internal GameObject m_Player;
     [Range(0, 1)]
     [SerializeField] internal float m_WindStrength;
@@ -39,9 +42,12 @@ public class GameManager : MonoBehaviour
     {
         m_WindStrength = 0;
         SceneHandler.AddScene("Island1");
+        TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
         yield return new WaitUntil(() => m_specialItemPicked);
+        TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
+        yield return new WaitWhile(() => TimelineManager.Instance.m_IsPlaying);
         SceneHandler.UnloadScene("Island1");
-        m_specialItemPicked = false; 
+        m_specialItemPicked = false;
         ResetPlayer();
 
         m_WindStrength = 0.15f;
@@ -53,6 +59,7 @@ public class GameManager : MonoBehaviour
 
         m_WindStrength = 0;
         SceneHandler.AddScene("Island1");
+        TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
         yield return new WaitUntil(() => m_specialItemPicked);
 
 
@@ -104,6 +111,9 @@ public class GameManager : MonoBehaviour
         m_Player.transform.position = Vector3.zero;
         m_Player.transform.rotation = Quaternion.identity;
     }
+    internal void DeactivateCharController() { m_controller.enabled = false; }
+    internal void ActivateCharController() { m_controller.enabled = true; }
+
 
     internal RaycastHit HitRayCast(float _maxDistance, Ray? _ray = null)
     {

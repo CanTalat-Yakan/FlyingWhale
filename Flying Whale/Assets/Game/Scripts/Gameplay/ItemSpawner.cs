@@ -8,27 +8,38 @@ public class ItemSpawner : MonoBehaviour
     private List<GameObject> m_spawnpoints = new List<GameObject>();
 
     [SerializeField]
-    private GameObject m_itemPrefab;
+    private List<GameObject> m_itemPrefabs = new List<GameObject>();
 
     [SerializeField]
-    private int m_itemCount;
+    private GameObject m_specialItemPrefab;
+
+    [SerializeField]
+    private int m_itemCount; //Same count for every item type for now 
 
     void Start()
     {
-        if(m_itemCount <= m_spawnpoints.Count)
+        //check if enough spawnpoints for all items in total
+        if (m_itemCount * m_itemPrefabs.Count < m_spawnpoints.Count)
         {
-            for(int i = 0; i < m_itemCount; i++)
+            //Loop for every item type
+            for (int item = 0; item < m_itemPrefabs.Count; item++)
             {
-                bool freeSpawnPoint = false;
-
-                while(!freeSpawnPoint)
+                //Loop all items of one type
+                for (int i = 0; i < m_itemCount; i++)
                 {
-                    int rnd = Random.Range(0, m_spawnpoints.Count);
-                    if(m_spawnpoints[rnd] != null)
+                    //spawnpoint can only be used once
+                    bool freeSpawnPoint = false;
+
+                    while (!freeSpawnPoint)
                     {
-                        Instantiate(m_itemPrefab, m_spawnpoints[rnd].transform.position, Quaternion.identity);
-                        m_spawnpoints[rnd] = null;
-                        freeSpawnPoint = true;
+                        int rnd = Random.Range(0, m_spawnpoints.Count);
+                        if (m_spawnpoints[rnd] != null)
+                        {
+                            //Instantiate object of current item type at random generated spawnpoint
+                            Instantiate(m_itemPrefabs[item], m_spawnpoints[rnd].transform.position, Quaternion.identity);
+                            m_spawnpoints[rnd] = null;
+                            freeSpawnPoint = true;
+                        }
                     }
                 }
             }

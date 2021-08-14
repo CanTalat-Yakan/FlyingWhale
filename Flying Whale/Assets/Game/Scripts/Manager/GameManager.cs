@@ -1,3 +1,5 @@
+using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +11,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] internal bool LOCKED = false;
     [SerializeField] internal LayerMask m_IgnoreLayer;
     [SerializeField] internal Camera m_MainCamera;
-    internal GameObject m_Player;
+    [SerializeField] internal CinemachineVirtualCamera m_CMVCamera;
+    [SerializeField] internal StarterAssets.ThirdPersonController m_controller;
+    [SerializeField] internal GameObject m_Player;
+    [Range(0, 1)]
+    [SerializeField] internal float m_WindStrength;
+    [Space]
+    internal int[] m_itemCounter = new int[4];
+    [SerializeField] bool m_specialItemPicked;
+    [SerializeField] bool m_whaleTimeFinished;
+
 
     void Awake()
     {
@@ -21,12 +32,38 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        LOCKED = false;
-
         if (m_MainCamera is null)
             m_MainCamera = Camera.main;
+
+        StartCoroutine(Loop());
+    }
+
+    IEnumerator Loop()
+    {
+        m_WindStrength = 0;
+        SceneHandler.AddScene("Island1");
+        TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
+        yield return new WaitUntil(() => m_specialItemPicked);
+        TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
+        yield return new WaitWhile(() => TimelineManager.Instance.m_IsPlaying);
+        SceneHandler.UnloadScene("Island1");
+        m_specialItemPicked = false;
+        ResetPlayer();
+
+        m_WindStrength = 0.15f;
+        SceneHandler.AddScene("Whale");
+        yield return new WaitUntil(() => m_whaleTimeFinished);
+        SceneHandler.UnloadScene("Whale");
+        m_whaleTimeFinished = false;
+        ResetPlayer();
+
+        m_WindStrength = 0;
+        SceneHandler.AddScene("Island1");
+        TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
+        yield return new WaitUntil(() => m_specialItemPicked);
+
+
+        yield return null;
     }
 
     void Update()
@@ -37,6 +74,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = LOCKED ? 0 : 1;
     }
 
+    public void GameOver() { Debug.Log("Game Over"); }
+
+    #region Predefined 
     void OptionsOverlay()
     {
         LOCKED = !LOCKED;
@@ -60,6 +100,20 @@ public class GameManager : MonoBehaviour
                 SceneHandler.UnloadScene("Options");
         }
     }
+
+    internal void PickedItem(int _i) { m_itemCounter[_i]++; }
+
+    internal void PickedItemSpecial() { m_specialItemPicked = true; }
+    internal void WhaleTimeFinished() { m_whaleTimeFinished = true; }
+
+    internal void ResetPlayer()
+    {
+        m_Player.transform.position = Vector3.zero;
+        m_Player.transform.rotation = Quaternion.identity;
+    }
+    internal void DeactivateCharController() { m_controller.enabled = false; }
+    internal void ActivateCharController() { m_controller.enabled = true; }
+
 
     internal RaycastHit HitRayCast(float _maxDistance, Ray? _ray = null)
     {
@@ -100,3 +154,5 @@ public static class ExtensionMethods
         return (_value - _oldMin) / (_oldMax - _oldMin) * (_newMax - _newMin) + _newMin;
     }
 }
+
+#endregion

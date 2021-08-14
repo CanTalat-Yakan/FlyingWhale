@@ -4,6 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - CinemachineTarget
+  - Item1
+  - Item2
+  - Item3
+  - Item4
+  - ItemSpecial
   - Turret
   layers:
   - Default
@@ -12,7 +18,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

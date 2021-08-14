@@ -14,6 +14,7 @@ TagManager:
   - Pivot
   - Spawnpoint
   - SpecialItemSpawnpoint
+  - Turret
   layers:
   - Default
   - TransparentFX

@@ -43,6 +43,16 @@ public class ItemSpawner : MonoBehaviour
                     }
                 }
             }
+            //Spawning special item in first available spot
+            for(int i = 0; i < m_spawnpoints.Count; i++)
+            {
+                if(m_spawnpoints[i] != null)
+                {
+                    Instantiate(m_specialItemPrefab, m_spawnpoints[i].transform.position, Quaternion.identity);
+                    return;
+                }
+            }
         }
+        else Debug.Log("Not enough spawnpoints available for number of items");
     }
 }

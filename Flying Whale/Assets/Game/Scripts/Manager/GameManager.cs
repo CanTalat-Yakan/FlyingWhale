@@ -12,14 +12,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] internal LayerMask m_IgnoreLayer;
     [SerializeField] internal Camera m_MainCamera;
     [SerializeField] internal CinemachineVirtualCamera m_CMVCamera;
-    [SerializeField] internal StarterAssets.ThirdPersonController m_controller;
-    [SerializeField] internal GameObject m_Player;
+    [SerializeField] StarterAssets.ThirdPersonController m_controller;
+    [SerializeField] Animator m_animator;
+    [SerializeField] RuntimeAnimatorController m_comAni;
+    [SerializeField] RuntimeAnimatorController m_expAni;
+    [SerializeField] GameObject m_player;
+    [SerializeField] GameObject m_pivot;
+    [SerializeField] GameObject m_sword;
     [Range(0, 1)]
     [SerializeField] internal float m_WindStrength;
     [Space]
-    internal int[] m_itemCounter = new int[4];
+    internal int[] m_ItemCounter = new int[4];
     [SerializeField] bool m_specialItemPicked;
     [SerializeField] bool m_whaleTimeFinished;
+    [SerializeField] internal bool m_fighting;
 
 
     void Awake()
@@ -42,6 +48,7 @@ public class GameManager : MonoBehaviour
     {
         m_WindStrength = 0;
         SceneHandler.AddScene("Island1");
+        yield return new WaitWhile(() => TimelineManager.Instance.m_IsPlaying);
         TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
         yield return new WaitUntil(() => m_specialItemPicked);
         TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
@@ -50,12 +57,22 @@ public class GameManager : MonoBehaviour
         m_specialItemPicked = false;
         ResetPlayer();
 
+        m_animator.runtimeAnimatorController = m_comAni;
+        GameObject sword = Instantiate(m_sword, m_pivot.transform.position, Quaternion.Euler(90, 0, 0), m_pivot.transform);
+        m_fighting = true;
+
+
         m_WindStrength = 0.15f;
         SceneHandler.AddScene("Whale");
         yield return new WaitUntil(() => m_whaleTimeFinished);
         SceneHandler.UnloadScene("Whale");
         m_whaleTimeFinished = false;
         ResetPlayer();
+
+        m_animator.runtimeAnimatorController = m_expAni;
+        Destroy(sword);
+        m_fighting = false;
+
 
         m_WindStrength = 0;
         SceneHandler.AddScene("Island1");
@@ -101,15 +118,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    internal void PickedItem(int _i) { m_itemCounter[_i]++; }
+    internal void PickedItem(int _i) { m_ItemCounter[_i]++; }
 
     internal void PickedItemSpecial() { m_specialItemPicked = true; }
     internal void WhaleTimeFinished() { m_whaleTimeFinished = true; }
 
     internal void ResetPlayer()
     {
-        m_Player.transform.position = Vector3.zero;
-        m_Player.transform.rotation = Quaternion.identity;
+        m_player.transform.position = Vector3.zero;
+        m_player.transform.rotation = Quaternion.identity;
     }
     internal void DeactivateCharController() { m_controller.enabled = false; }
     internal void ActivateCharController() { m_controller.enabled = true; }

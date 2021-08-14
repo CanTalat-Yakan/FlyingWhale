@@ -12,6 +12,8 @@ TagManager:
   - ItemSpecial
   - Sword
   - Pivot
+  - Spawnpoint
+  - SpecialItemSpawnpoint
   layers:
   - Default
   - TransparentFX

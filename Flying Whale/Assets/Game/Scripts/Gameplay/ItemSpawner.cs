@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> m_spawnpoints = new List<GameObject>();
+    private GameObject[] m_spawnpoints;
 
     [SerializeField]
     private List<GameObject> m_itemPrefabs = new List<GameObject>();
@@ -18,8 +18,10 @@ public class ItemSpawner : MonoBehaviour
 
     void Start()
     {
+        m_spawnpoints = GameObject.FindGameObjectsWithTag("Spawnpoint");
+
         //check if enough spawnpoints for all items in total
-        if (m_itemCount * m_itemPrefabs.Count < m_spawnpoints.Count)
+        if (m_itemCount * m_itemPrefabs.Count < m_spawnpoints.Length)
         {
             SpawnItems();
         }
@@ -39,25 +41,18 @@ public class ItemSpawner : MonoBehaviour
 
                 while (!freeSpawnPoint)
                 {
-                    int rnd = Random.Range(0, m_spawnpoints.Count);
+                    int rnd = Random.Range(0, m_spawnpoints.Length);
                     if (m_spawnpoints[rnd] != null)
                     {
                         //Instantiate object of current item type at random generated spawnpoint
-                        Instantiate(m_itemPrefabs[item], m_spawnpoints[rnd].transform.position, Quaternion.identity);
+                        Instantiate(m_itemPrefabs[item], m_spawnpoints[rnd].transform.position, Quaternion.identity, gameObject.transform) ;
                         m_spawnpoints[rnd] = null;
                         freeSpawnPoint = true;
                     }
                 }
             }
         }
-        //Spawning special item in first available spot
-        for (int i = 0; i < m_spawnpoints.Count; i++)
-        {
-            if (m_spawnpoints[i] != null)
-            {
-                Instantiate(m_specialItemPrefab, m_spawnpoints[i].transform.position, Quaternion.identity);
-                return;
-            }
-        }
+        //Spawning special item
+        Instantiate(m_specialItemPrefab, GameObject.FindGameObjectWithTag("SpecialItemSpawnpoint").transform.position, Quaternion.identity, gameObject.transform);
     }
 }

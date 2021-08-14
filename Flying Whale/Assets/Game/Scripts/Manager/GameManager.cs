@@ -35,6 +35,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = LOCKED ? 0 : 1;
     }
 
+    public void GameOver()
+    {
+        Debug.Log("Game Over");
+    }
+
+    #region Predefined 
     void OptionsOverlay()
     {
         LOCKED = !LOCKED;
@@ -103,3 +109,5 @@ public static class ExtensionMethods
         return (_value - _oldMin) / (_oldMax - _oldMin) * (_newMax - _newMin) + _newMin;
     }
 }
+
+#endregion

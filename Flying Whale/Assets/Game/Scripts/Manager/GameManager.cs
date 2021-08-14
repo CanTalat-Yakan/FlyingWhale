@@ -35,33 +35,22 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Loop()
     {
-        SceneHandler.AddScene("TestingScene1");
+        SceneHandler.AddScene("Island1");
         yield return new WaitUntil(() => m_specialItemPicked);
-        SceneHandler.UnloadScene("TestingScene1");
+        SceneHandler.UnloadScene("Island1");
         m_specialItemPicked = false;
         m_Player.transform.position = Vector3.zero;
         m_Player.transform.rotation = Quaternion.identity;
 
-        SceneHandler.AddScene("TestingScene2");
+        SceneHandler.AddScene("Whale");
         yield return new WaitUntil(() => m_whaleTimeFinished);
-        SceneHandler.UnloadScene("TestingScene2");
+        SceneHandler.UnloadScene("Whale");
         m_whaleTimeFinished = false;
         m_Player.transform.position = Vector3.zero;
         m_Player.transform.rotation = Quaternion.identity;
 
-        SceneHandler.AddScene("TestingScene1");
+        SceneHandler.AddScene("Island1");
         yield return new WaitUntil(() => m_specialItemPicked);
-        SceneHandler.UnloadScene("TestingScene1");
-        m_specialItemPicked = false;
-        m_Player.transform.position = Vector3.zero;
-        m_Player.transform.rotation = Quaternion.identity;
-
-        SceneHandler.AddScene("TestingScene2");
-        yield return new WaitUntil(() => m_whaleTimeFinished);
-        SceneHandler.UnloadScene("TestingScene2");
-        m_whaleTimeFinished = false;
-        m_Player.transform.position = Vector3.zero;
-        m_Player.transform.rotation = Quaternion.identity;
 
 
         yield return null;

@@ -12,10 +12,10 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/Options.unity
     guid: 122260943f5bb5d4196f5642d6fb8c78
   - enabled: 1
-    path: Assets/Core/#Packages/StarterAssets/ThirdPersonController/Scenes/TestingScene1.unity
-    guid: 1456edf71db6f0f4689cffc8b4b10c57
+    path: Assets/Game/Scenes/Main.unity
+    guid: 921577b751c389648971e715609fea5f
   - enabled: 1
-    path: Assets/Core/#Packages/StarterAssets/ThirdPersonController/Scenes/TestingScene2.unity
-    guid: 76dc74382a46a81428a2ef4f9fa473b5
+    path: Assets/Game/Scenes/Whale/Whale.unity
+    guid: 1cc7d7434e3b62a43890936339f9d700
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}

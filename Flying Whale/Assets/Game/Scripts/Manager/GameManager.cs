@@ -10,10 +10,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] internal bool LOCKED = false;
     [SerializeField] internal LayerMask m_IgnoreLayer;
     [SerializeField] internal Camera m_MainCamera;
-    internal GameObject m_Player;
+    [SerializeField] internal GameObject m_Player;
+    [Space]
     internal int[] m_itemCounter = new int[4];
     [SerializeField] bool m_specialItemPicked;
     [SerializeField] bool m_whaleTimeFinished;
+
 
     void Awake()
     {
@@ -37,21 +39,29 @@ public class GameManager : MonoBehaviour
         yield return new WaitUntil(() => m_specialItemPicked);
         SceneHandler.UnloadScene("TestingScene1");
         m_specialItemPicked = false;
+        m_Player.transform.position = Vector3.zero;
+        m_Player.transform.rotation = Quaternion.identity;
 
         SceneHandler.AddScene("TestingScene2");
         yield return new WaitUntil(() => m_whaleTimeFinished);
         SceneHandler.UnloadScene("TestingScene2");
         m_whaleTimeFinished = false;
+        m_Player.transform.position = Vector3.zero;
+        m_Player.transform.rotation = Quaternion.identity;
 
         SceneHandler.AddScene("TestingScene1");
         yield return new WaitUntil(() => m_specialItemPicked);
         SceneHandler.UnloadScene("TestingScene1");
         m_specialItemPicked = false;
+        m_Player.transform.position = Vector3.zero;
+        m_Player.transform.rotation = Quaternion.identity;
 
         SceneHandler.AddScene("TestingScene2");
         yield return new WaitUntil(() => m_whaleTimeFinished);
         SceneHandler.UnloadScene("TestingScene2");
         m_whaleTimeFinished = false;
+        m_Player.transform.position = Vector3.zero;
+        m_Player.transform.rotation = Quaternion.identity;
 
 
         yield return null;

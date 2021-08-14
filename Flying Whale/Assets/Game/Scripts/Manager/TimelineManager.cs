@@ -8,6 +8,7 @@ public class TimelineManager : MonoBehaviour
     public static TimelineManager Instance { get; private set; }
 
     [SerializeField] PlayableDirector m_director;
+    [SerializeField] internal bool m_Play;
     [SerializeField] internal PlayableAsset m_Beginning;
     [SerializeField] internal PlayableAsset m_Ending;
 
@@ -28,6 +29,7 @@ public class TimelineManager : MonoBehaviour
 
     public void Play(PlayableAsset _tl_asset)
     {
+        if (!m_Play) return;
         if (!_tl_asset) return;
 
         StartCoroutine(ActivateTL(_tl_asset));

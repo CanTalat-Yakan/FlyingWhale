@@ -5,8 +5,9 @@ using static UnityEngine.ParticleSystem;
 
 public class DustStormLevel : MonoBehaviour
 {
-    [SerializeField] ParticleSystem m_ps;
-    [SerializeField] ParticleSystem m_sub;
+    [SerializeField] ParticleSystem m_dust;
+    [SerializeField] ParticleSystem m_trail;
+    EmissionModule m_module;
     float m_tmp;
 
     void Start() { m_tmp = -1; }
@@ -14,11 +15,13 @@ public class DustStormLevel : MonoBehaviour
     {
         if (m_tmp != GameManager.Instance.m_WindStrength)
         {
-            EmissionModule module = m_ps.emission;
-            module.rateOverTime = GameManager.Map(GameManager.Instance.m_WindStrength, 0, 1, 0, 1000);
+            m_dust.Play();
+            m_module = m_dust.emission;
+            m_module.rateOverTime = GameManager.Map(GameManager.Instance.m_WindStrength, 0, 1, 0, 150);
 
-            module = m_sub.emission;
-            module.rateOverTime = GameManager.Map(GameManager.Instance.m_WindStrength, 0, 1, 0, 1000);
+            m_trail.Play();
+            m_module = m_trail.emission;
+            m_module.rateOverTime = GameManager.Map(GameManager.Instance.m_WindStrength, 0, 1, 0, 80);
         }
 
         m_tmp = GameManager.Instance.m_WindStrength;

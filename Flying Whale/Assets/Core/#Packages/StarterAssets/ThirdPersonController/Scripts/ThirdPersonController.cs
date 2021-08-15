@@ -152,13 +152,22 @@ namespace StarterAssets
             _animIDMotionZ = Animator.StringToHash("Y");
             _animIDAttack = Animator.StringToHash("Attack");
         }
-
+bool tmp;
         private void GroundedCheck()
         {
             // set sphere position, with offset
             Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z);
             Grounded = Physics.CheckSphere(spherePosition, GroundedRadius, GroundLayers, QueryTriggerInteraction.Ignore);
 
+            if(Grounded != tmp)
+            {
+                if(!Grounded)
+                    AudioManager.Instance.Play(AudioManager.PlayRandomFromList(ref AudioManager.Instance.m_AudioInfo.Jump.clips));
+                else
+                    AudioManager.Instance.Play(AudioManager.PlayRandomFromList(ref AudioManager.Instance.m_AudioInfo.Landing[0].clips));
+            }
+
+            tmp = Grounded;
             // update animator if using character
             if (_hasAnimator)
             {
@@ -274,7 +283,6 @@ namespace StarterAssets
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDJump, true);
-                        AudioManager.Instance.Play(AudioManager.PlayRandomFromList(ref AudioManager.Instance.m_AudioInfo.Jump.clips));
                     }
                 }
 

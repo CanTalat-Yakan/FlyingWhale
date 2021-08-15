@@ -119,6 +119,8 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+            StartCoroutine(FootSteps());
         }
 
         private void Update()
@@ -468,6 +470,20 @@ bool tmp;
             GameManager.Instance.m_Attacking = false;
 
             yield return null;
+        }
+
+        IEnumerator FootSteps()
+        {
+            while(true)
+            {
+                yield return new WaitForSeconds( 0.05f);
+
+                AudioManager.Instance.Play(AudioManager.PlayRandomFromList(ref AudioManager.Instance.m_AudioInfo.Footsteps[0].clips), false, 2);
+
+                yield return new WaitWhile(() => _speed == 0);
+
+                yield return new WaitForSeconds(_input.move.magnitude * 0.4f + (_input.sprint ? - 0.2f : 0));
+            }
         }
 
         private void OnDrawGizmosSelected()

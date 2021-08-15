@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject m_sword;
     [SerializeField] Material m_day;
     [SerializeField] Material m_night;
+    [SerializeField] AudioSource m_wind;
     [Range(0, 1)]
     [SerializeField] internal float m_WindStrength;
     [Space]
@@ -184,6 +185,8 @@ public class GameManager : MonoBehaviour
             OptionsOverlay();
 
         Time.timeScale = LOCKED ? 0 : 1;
+
+        m_wind.volume = m_Curves.Log.Evaluate(m_WindStrength);
     }
 
     public void GameOver() { StopCoroutine(m_currentCoroutine); StartCoroutine(Respawn()); }
@@ -227,7 +230,7 @@ public class GameManager : MonoBehaviour
     internal void SetDustStormWithTimer(float _timerDuration, float _currentTimer)
     {
         m_WindStrength.Remap(
-            0, _currentTimer, 
+            0, _currentTimer,
             0, _timerDuration);
     }
 

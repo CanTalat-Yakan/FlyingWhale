@@ -321,7 +321,8 @@ namespace StarterAssets
         }
 
         Vector3 point;
-        Vector3 pointtmp;
+        Vector3 tmpMousePos;
+        int currentInput;
         private void CombatMove()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
@@ -357,8 +358,6 @@ namespace StarterAssets
 
 
 
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
 
             if (GameManager.Instance.BoolRayCast(20, Camera.main.ScreenPointToRay(Input.mousePosition)))
             {
@@ -367,11 +366,13 @@ namespace StarterAssets
                 _targetRotation = Mathf.Atan2(point.x - transform.position.x, point.z - transform.position.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation - 90, ref _rotationVelocity, RotationSmoothTime);
 
-                if (pointtmp != point)
-                    // rotate to face input direction relative to camera position
+                if (tmpMousePos != Input.mousePosition)
+                {
+                    currentInput = 0;
                     transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                }
 
-                pointtmp = point;
+                tmpMousePos = Input.mousePosition;
             }
 
             if (_input.look != Vector2.zero)
@@ -379,9 +380,22 @@ namespace StarterAssets
                 _targetRotation = Mathf.Atan2(_input.look.x, -_input.look.y) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, GameManager.Instance.m_Attacking ? 0.1f : RotationSmoothTime);
 
-                // rotate to face input direction relative to camera position
+                currentInput = 1;
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
+
+
+            if(currentInput == 0)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = false;
+            }
+
 
             if (GameManager.Instance.m_Attacking) return;
 

@@ -77,6 +77,12 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartIsland()
     {
+        yield return new WaitWhile(() => AudioManager.Instance is null);
+
+        AudioManager.Instance.StartMainMusic();
+        AudioManager.Instance.StopBattleMusic();
+
+
         SceneHandler.AddScene("Island" + m_CurrentLevel);
 
         yield return new WaitUntil(() => SceneHandler.IsSceneLoaded("Island" + m_CurrentLevel));
@@ -113,6 +119,11 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartWhalePhase()
     {
+        yield return new WaitWhile(() => AudioManager.Instance is null);
+
+        AudioManager.Instance.StopMainMusic();
+        AudioManager.Instance.PlayBattleMusic();
+
         SceneHandler.AddScene("Whale");
 
         yield return new WaitUntil(() => SceneHandler.IsSceneLoaded("Whale"));
@@ -135,7 +146,7 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitUntil(() => m_animator.runtimeAnimatorController == m_combatAniController);
 
-        
+
         GameObject sword = Instantiate(m_sword, Vector3.zero, Quaternion.identity, m_pivot.transform);
         sword.transform.localPosition = m_sword.transform.position;
         sword.transform.localRotation = m_sword.transform.rotation;
@@ -225,6 +236,10 @@ public class GameManager : MonoBehaviour
 
             if (!SceneHandler.IsSceneLoaded("Options"))
                 SceneHandler.AddScene("Options");
+
+            AudioManager.Instance.Play(AudioManager.Instance.m_AudioInfo.PanelOpen);
+            AudioManager.Instance.StopMainMusic();
+            AudioManager.Instance.StopBattleMusic();
         }
         //Continue
         else
@@ -234,6 +249,13 @@ public class GameManager : MonoBehaviour
 
             if (SceneHandler.IsSceneLoaded("Options"))
                 SceneHandler.UnloadScene("Options");
+
+            AudioManager.Instance.Play(AudioManager.Instance.m_AudioInfo.PanelClose);
+
+            if (SceneHandler.IsSceneLoaded("Island" + m_CurrentLevel))
+                AudioManager.Instance.PlayMainMusic();
+            if (SceneHandler.IsSceneLoaded("Whale"))
+                AudioManager.Instance.PlayBattleMusic();
         }
     }
 
@@ -246,6 +268,17 @@ public class GameManager : MonoBehaviour
     {
         RenderSettings.skybox = m_day;
         GameObject.FindGameObjectWithTag("DirectionalLight").GetComponent<Light>().intensity = 1;
+    }
+
+    internal int CheckGroundType()
+    {
+        //if (BoolRayCast(1, new Ray(m_controller.transform.position, Vector3.down))) return 0;
+
+        //string tag = HitRayCast(1, new Ray(m_controller.transform.position, Vector3.down)).collider.tag;
+        //if (tag == "Dirty") return 0;
+        //if (tag == "Wood") return 1;
+
+        return 0;
     }
 
     internal void SetDustStormWithTimer(float _timerDuration, float _currentTimer)

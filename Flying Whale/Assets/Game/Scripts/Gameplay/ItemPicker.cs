@@ -22,13 +22,18 @@ public class ItemPicker : MonoBehaviour
         if (other.gameObject.CompareTag("Item4"))
             Picked(3, other.gameObject);
 
-        if(other.gameObject.CompareTag("ItemSpecial"))
+        if (other.gameObject.CompareTag("ItemSpecial"))
+        {
+            AudioManager.Instance.Play(AudioManager.Instance.m_AudioInfo.ItemSpecial);
             GameManager.Instance.PickedItemSpecial();
+        }
     }
 
     void Picked(int _index, GameObject _obj)
     {
         GameManager.Instance.PickedItem(_index);
         Destroy(_obj);
+
+        AudioManager.Instance.Play(AudioManager.Instance.m_AudioInfo.Item, false, 1 - Random.value * 0.5f);
     }
 }

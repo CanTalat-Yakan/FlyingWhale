@@ -5,9 +5,6 @@ using UnityEngine;
 public class ScaleOverDistance : MonoBehaviour
 {
     [SerializeField] float m_scale;
-    [SerializeField] float m_distance = 50;
-    [Range(0.1f, 1)]
-    [SerializeField] float m_minScale = 0.5f;
     Vector3 m_initialScale;
 
     void Start()

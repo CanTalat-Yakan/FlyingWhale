@@ -5,7 +5,6 @@ using static UnityEngine.ParticleSystem;
 
 public class DustStormLevel : MonoBehaviour
 {
-    [SerializeField] AnimationCurve m_curve;
     [SerializeField] ParticleSystem m_dust;
     [SerializeField] ParticleSystem m_trail;
     EmissionModule m_module;
@@ -24,11 +23,11 @@ public class DustStormLevel : MonoBehaviour
 
             m_dust.Play();
             m_module = m_dust.emission;
-            m_module.rateOverTime = m_curve.Evaluate(GameManager.Instance.m_WindStrength) * 110;
+            m_module.rateOverTime = GameManager.Instance.m_Curves.Log.Evaluate(GameManager.Instance.m_WindStrength) * 110;
 
             m_trail.Play();
             m_module = m_trail.emission;
-            m_module.rateOverTime = m_curve.Evaluate(GameManager.Instance.m_WindStrength) * 80;
+            m_module.rateOverTime = GameManager.Instance.m_Curves.Log.Evaluate(GameManager.Instance.m_WindStrength) * 80;
         }
 
         m_tmp = GameManager.Instance.m_WindStrength;

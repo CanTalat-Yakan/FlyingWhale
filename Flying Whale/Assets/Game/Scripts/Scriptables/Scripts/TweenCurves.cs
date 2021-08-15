@@ -6,4 +6,5 @@ using UnityEngine;
 public class TweenCurves : ScriptableObject
 {
     public AnimationCurve SquishSquash;
+    public AnimationCurve Log;
 }

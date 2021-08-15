@@ -94,7 +94,7 @@ public class AudioManager : MonoBehaviour
 
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 
-        audioSource.clip = PlayRandomFromList(ref m_AudioInfo.Music);
+        audioSource.clip = m_AudioInfo.Music;
         audioSource.rolloffMode = AudioRolloffMode.Linear;
         audioSource.volume = m_tmpVolume = _volume;
         audioSource.pitch = 1;

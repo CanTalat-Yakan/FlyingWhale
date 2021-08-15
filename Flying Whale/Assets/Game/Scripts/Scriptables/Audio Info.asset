@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25f74032bb63752468f6f8a11f99ec51, type: 3}
+  m_Name: Audio Info
+  m_EditorClassIdentifier: 
+  Music: {fileID: 0}
+  Ambient: {fileID: 8300000, guid: 8a8813c32b071d54aadf91a811223536, type: 3}
+  Environment: {fileID: 8300000, guid: 986e1f27e61fd85439fd7f740c9b200e, type: 3}
+  BattleMusic: {fileID: 0}
+  Button:
+    clips:
+    - {fileID: 8300000, guid: 582fb8e61ad44ae41a6ae5c6dd0de30b, type: 3}
+    - {fileID: 8300000, guid: 9241fb58d93775d48afd03abd08cdd06, type: 3}
+  Panel: {fileID: 0}
+  Footsteps:
+  - clips:
+    - {fileID: 8300000, guid: aa26166ba93e00648a7f87ef8d139255, type: 3}
+    - {fileID: 8300000, guid: ffd0e5c3b98ef9b4081e00f69c02c227, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: aa26166ba93e00648a7f87ef8d139255, type: 3}
+    - {fileID: 8300000, guid: ffd0e5c3b98ef9b4081e00f69c02c227, type: 3}
+    - {fileID: 8300000, guid: b88d983e7b82a2f4aa2a4291ed63d5f1, type: 3}
+    - {fileID: 8300000, guid: 41ea835935639d9419e3d4d3d2bfb070, type: 3}
+    - {fileID: 8300000, guid: 3a6ffff139469df47881dcb8cdedbd7e, type: 3}
+    - {fileID: 8300000, guid: d99bf511b44a54d42a589e3d3799dee3, type: 3}
+  Landing:
+  - clips:
+    - {fileID: 8300000, guid: 91d4aaf1ae0100f4ca62c4e67ad28a9d, type: 3}
+    - {fileID: 8300000, guid: dae3a09670da1f944b4e4a06a96909f1, type: 3}
+  - clips:
+    - {fileID: 8300000, guid: 91d4aaf1ae0100f4ca62c4e67ad28a9d, type: 3}
+    - {fileID: 8300000, guid: dae3a09670da1f944b4e4a06a96909f1, type: 3}
+    - {fileID: 8300000, guid: f48318948c2cfa14ea63d684971398cc, type: 3}
+    - {fileID: 8300000, guid: 447fce5c53f33b749ab23802a813a10a, type: 3}
+  Jump:
+    clips:
+    - {fileID: 8300000, guid: 2aab62781ddee9a4dae9afbb37fbc1cc, type: 3}
+    - {fileID: 8300000, guid: 2373ecbc79aae6448b278b6649d1769d, type: 3}
+    - {fileID: 8300000, guid: 8c9343b80069d074d8e30b5fe1cbe08a, type: 3}
+    - {fileID: 8300000, guid: 589e8e8e19514324d92d28afcb51ee21, type: 3}
+  Damage:
+    clips:
+    - {fileID: 8300000, guid: bcb8c0a1c887b4f40a4700a4307d5467, type: 3}
+  Groan:
+    clips:
+    - {fileID: 8300000, guid: 26d9d9d61cade2e4cbac7e10bc675e2f, type: 3}
+    - {fileID: 8300000, guid: 955f934dc58d84f44b349444888eab60, type: 3}
+    - {fileID: 8300000, guid: 0f494e6d451320d498758f63bcd3e47c, type: 3}
+    - {fileID: 8300000, guid: d8c20d0aedc17bc47b33cf3a9d883e7f, type: 3}
+    - {fileID: 8300000, guid: 09cb0747f19af61458ff3b5640ecb752, type: 3}
+  Swoosh:
+    clips:
+    - {fileID: 8300000, guid: 634ffcac92999be4d86c1421dee2b149, type: 3}
+    - {fileID: 8300000, guid: 6fe52c00fe10b0942bfa919f5221b7ae, type: 3}
+    - {fileID: 8300000, guid: 976f1129b0d407f4f90539e0a971331c, type: 3}
+    - {fileID: 8300000, guid: 92df48ae988ea5b459e9971cbb67f53a, type: 3}
+    - {fileID: 8300000, guid: dcac5f6dc4943974f9fc674325b6a907, type: 3}
+  Sword:
+    clips:
+    - {fileID: 8300000, guid: 419431f549ef0604b9173e1259bdb556, type: 3}
+    - {fileID: 8300000, guid: 99773aca61370b24d9fd6348b929999c, type: 3}
+    - {fileID: 8300000, guid: 05f52d66e6f15bc40a2167aef4a5f402, type: 3}
+    - {fileID: 8300000, guid: d6224e67b4a09544bb5270c73c57b089, type: 3}
+    - {fileID: 8300000, guid: 8206b4650369edb45b1d78d83328bf9f, type: 3}
+    - {fileID: 8300000, guid: a1f4708ef14ea054a9d3fa190f820753, type: 3}
+    - {fileID: 8300000, guid: b751b16a1e18b2242ad73a7f71c64cff, type: 3}
+    - {fileID: 8300000, guid: 3843bd45fc171ae47821fb45efed754c, type: 3}
+    - {fileID: 8300000, guid: 7c641747eef938f4481d9bd4ba75368a, type: 3}
+  Cannon:
+    clips:
+    - {fileID: 8300000, guid: d6320e7e1ac3e4e4fb246ff0d43eb0ee, type: 3}
+    - {fileID: 8300000, guid: 6333e700f1fd07047a40b843fab5c81a, type: 3}
+    - {fileID: 8300000, guid: 25becd5b2d601e243b6840eef8468722, type: 3}

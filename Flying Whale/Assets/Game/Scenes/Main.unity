@@ -232,8 +232,8 @@ MonoBehaviour:
   m_IgnoreLayer:
     serializedVersion: 2
     m_Bits: 64
-  m_MainCamera: {fileID: 0}
-  m_CMVCamera: {fileID: 0}
+  m_MainCamera: {fileID: 1843567405}
+  m_CMVCamera: {fileID: 1130617090}
   m_Curves: {fileID: 11400000, guid: 365d5a29ace3c984eb08dc5c95506f1f, type: 2}
   m_controller: {fileID: 2008529352}
   m_animator: {fileID: 2008529354}
@@ -382,6 +382,17 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 2674430925d000447a7151f53be63bb0, type: 2}
+--- !u!114 &1130617090 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8522524214875641444, guid: 1023ba21f29980249b383950542553ed, type: 3}
+  m_PrefabInstance: {fileID: 1780715401}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1215972573 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6368526504643024708, guid: 1023ba21f29980249b383950542553ed, type: 3}
@@ -481,6 +492,11 @@ PrefabInstance:
 --- !u!4 &1780715402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7708879608261822799, guid: 1023ba21f29980249b383950542553ed, type: 3}
+  m_PrefabInstance: {fileID: 1780715401}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &1843567405 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 1647151867951971661, guid: 1023ba21f29980249b383950542553ed, type: 3}
   m_PrefabInstance: {fileID: 1780715401}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2008529345 stripped

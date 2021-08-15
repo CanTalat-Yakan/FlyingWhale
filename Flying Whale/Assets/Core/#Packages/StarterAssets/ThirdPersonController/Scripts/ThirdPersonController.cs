@@ -136,7 +136,8 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            CameraRotation();
+            if (!GameManager.Instance.m_fighting)
+                CameraRotation();
         }
 
         private void AssignAnimationIDs()
@@ -318,7 +319,7 @@ namespace StarterAssets
             return Mathf.Clamp(lfAngle, lfMin, lfMax);
         }
 
-
+        Vector3 point;
         private void CombatMove()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
@@ -352,25 +353,49 @@ namespace StarterAssets
                 _speed = targetSpeed;
             }
 
+
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            //if (_input.move != Vector2.zero)
+            {
+                point = GameManager.Instance.HitRayCast(20, Camera.main.ScreenPointToRay(Input.mousePosition)).point;
+
+                _targetRotation = Mathf.Atan2(point.x - transform.position.x, point.z - transform.position.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation - 90, ref _rotationVelocity, RotationSmoothTime);
+
+                // rotate to face input direction relative to camera position
+                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            }
+
+
+
+
             // normalise input direction
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y);
 
-            // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-            // if there is a move input rotate player when the player is moving
-            //transform.rotation = Quaternion.LookRotation(GameManager.Instance.HitRayCast(25).point - transform.position, Vector3.up);
+            Vector3 targetDirectionForward = Vector3.ProjectOnPlane(_mainCamera.transform.forward, Vector3.up);
+            Vector3 targetDirectionRight = _mainCamera.transform.right;
 
+            Vector3 animationInputDirection = new Vector3(point.x - transform.position.x, 0, point.z - transform.position.z);
+            Vector3 animationDirectionForward = animationInputDirection;
+            Vector3 animationDirectionRight = Vector3.Cross(animationInputDirection, Vector3.up);
+
+            Vector3 finalDirection = inputDirection.x * targetDirectionRight + inputDirection.z * targetDirectionForward;
+            Vector3 finalAnimationDirection = inputDirection.x * animationDirectionRight + inputDirection.z * animationDirectionForward;
 
             // move the player
-            _controller.Move(inputDirection.normalized * (_speed * Time.deltaTime));
+            _controller.Move(finalDirection.normalized * (_speed * Time.deltaTime));
 
-            _animationBlendX = Mathf.Lerp(_animationBlendX, _input.move.x, Time.deltaTime * SpeedChangeRate);
-            _animationBlendY = Mathf.Lerp(_animationBlendY, _input.move.y, Time.deltaTime * SpeedChangeRate);
+            _animationBlendX = Mathf.Lerp(_animationBlendX, finalAnimationDirection.x, Time.deltaTime * SpeedChangeRate);
+            _animationBlendY = Mathf.Lerp(_animationBlendY, finalAnimationDirection.z, Time.deltaTime * SpeedChangeRate);
             // update animator if using character
             if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDMotionX, _animationBlendX);
                 _animator.SetFloat(_animIDMotionZ, _animationBlendY);
-                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude + (!_input.sprint ? - 0.25f : 0));
+                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude + (!_input.sprint ? -0.25f : 0));
             }
         }
 
@@ -383,6 +408,8 @@ namespace StarterAssets
 
         private void OnDrawGizmosSelected()
         {
+            Gizmos.DrawSphere(point + Vector3.up * 2, 2);
+
             Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
             Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
 
@@ -391,6 +418,7 @@ namespace StarterAssets
 
             // when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
             Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
+
         }
     }
 }

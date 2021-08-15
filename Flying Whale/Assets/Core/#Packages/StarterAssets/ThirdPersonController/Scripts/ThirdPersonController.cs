@@ -359,21 +359,20 @@ namespace StarterAssets
 
 
 
-            if (GameManager.Instance.BoolRayCast(20, Camera.main.ScreenPointToRay(Input.mousePosition)))
+            if (tmpMousePos != Input.mousePosition)
             {
-                point = GameManager.Instance.HitRayCast(20, Camera.main.ScreenPointToRay(Input.mousePosition)).point;
-
-                _targetRotation = Mathf.Atan2(point.x - transform.position.x, point.z - transform.position.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation - 90, ref _rotationVelocity, RotationSmoothTime);
-
-                if (tmpMousePos != Input.mousePosition)
+                if (GameManager.Instance.BoolRayCast(20, Camera.main.ScreenPointToRay(Input.mousePosition)))
                 {
+                    point = GameManager.Instance.HitRayCast(20, Camera.main.ScreenPointToRay(Input.mousePosition)).point;
+
+                    _targetRotation = Mathf.Atan2(point.x - transform.position.x, point.z - transform.position.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+                    float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation - 90, ref _rotationVelocity, RotationSmoothTime);
+
                     currentInput = 0;
                     transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
                 }
-
-                tmpMousePos = Input.mousePosition;
             }
+            tmpMousePos = Input.mousePosition;
 
             if (_input.look != Vector2.zero)
             {
@@ -385,23 +384,22 @@ namespace StarterAssets
             }
 
 
-            if(currentInput == 0)
+            if (currentInput == 0)
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
             else
             {
-                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
 
 
-            if (GameManager.Instance.m_Attacking) return;
-
 
             // normalise input direction
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y);
+            inputDirection *= GameManager.Instance.m_Attacking ? 0.05f : 1;
 
             Vector3 targetDirectionForward = Vector3.ProjectOnPlane(_mainCamera.transform.forward, Vector3.up);
             Vector3 targetDirectionRight = _mainCamera.transform.right;
@@ -414,7 +412,7 @@ namespace StarterAssets
             Vector3 finalAnimationDirection = inputDirection.x * animationDirectionRight + inputDirection.z * animationDirectionForward;
 
             // move the player
-            _controller.Move(finalDirection.normalized * (_speed * Time.deltaTime));
+            _controller.Move(finalDirection.normalized * ((GameManager.Instance.m_Attacking ? MoveSpeed * 0.4f: _speed) * Time.deltaTime));
 
             _animationBlendX = Mathf.Lerp(_animationBlendX, finalAnimationDirection.x, Time.deltaTime * SpeedChangeRate);
             _animationBlendY = Mathf.Lerp(_animationBlendY, finalAnimationDirection.z, Time.deltaTime * SpeedChangeRate);

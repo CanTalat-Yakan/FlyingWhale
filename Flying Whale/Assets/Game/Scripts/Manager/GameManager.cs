@@ -135,8 +135,10 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitUntil(() => m_animator.runtimeAnimatorController == m_combatAniController);
 
+        
         GameObject sword = Instantiate(m_sword, Vector3.zero, Quaternion.identity, m_pivot.transform);
-        sword.transform.localPosition = Vector3.zero;
+        sword.transform.localPosition = m_sword.transform.position;
+        sword.transform.localRotation = m_sword.transform.rotation;
 
         m_Fighting = true;
 

@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25f74032bb63752468f6f8a11f99ec51, type: 3}
   m_Name: Audio Info
   m_EditorClassIdentifier: 
-  Music: {fileID: 0}
+  Music: {fileID: 8300000, guid: a20be3af47205144a85e9dbac4557891, type: 3}
   Ambient: {fileID: 8300000, guid: 8a8813c32b071d54aadf91a811223536, type: 3}
   Environment: {fileID: 8300000, guid: 986e1f27e61fd85439fd7f740c9b200e, type: 3}
-  BattleMusic: {fileID: 0}
+  BattleMusic: {fileID: 8300000, guid: bb0c04c791f9dd14788254380e592e83, type: 3}
+  Item: {fileID: 8300000, guid: 661aae0265a0d4a41a00329ea9443e77, type: 3}
+  ItemSpecial: {fileID: 8300000, guid: 0a74241c7445e334980ca1ea783b9bfb, type: 3}
   Button:
     clips:
     - {fileID: 8300000, guid: 582fb8e61ad44ae41a6ae5c6dd0de30b, type: 3}
     - {fileID: 8300000, guid: 9241fb58d93775d48afd03abd08cdd06, type: 3}
-  Panel: {fileID: 0}
+  PanelOpen: {fileID: 8300000, guid: aaa8fb4be6c4df841871dbfffb012df5, type: 3}
+  PanelClose: {fileID: 8300000, guid: 85317b3132112bf46bf03d64b2b39439, type: 3}
   Footsteps:
   - clips:
     - {fileID: 8300000, guid: aa26166ba93e00648a7f87ef8d139255, type: 3}

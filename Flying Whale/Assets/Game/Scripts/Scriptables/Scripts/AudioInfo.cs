@@ -11,10 +11,13 @@ public class AudioInfo : ScriptableObject
     public AudioClip Ambient;
     public AudioClip Environment;
     public AudioClip BattleMusic;
+    public AudioClip Item;
+    public AudioClip ItemSpecial;
 
     [Header("Menu")]
     public AudioCollection Button;
-    public AudioClip Panel;
+    public AudioClip PanelOpen;
+    public AudioClip PanelClose;
 
     [Header("Player")]
     public AudioCollection[] Footsteps;
@@ -27,6 +30,7 @@ public class AudioInfo : ScriptableObject
 
     [Header("Battle")]
     public AudioCollection Cannon;
+
 }
 
 [Serializable] public struct AudioCollection { public AudioClip[] clips; }

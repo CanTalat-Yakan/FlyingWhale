@@ -274,6 +274,7 @@ namespace StarterAssets
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDJump, true);
+                        AudioManager.Instance.Play(AudioManager.PlayRandomFromList(ref AudioManager.Instance.m_AudioInfo.Jump.clips));
                     }
                 }
 
@@ -412,7 +413,7 @@ namespace StarterAssets
             Vector3 finalAnimationDirection = inputDirection.x * animationDirectionRight + inputDirection.z * animationDirectionForward;
 
             // move the player
-            _controller.Move(finalDirection.normalized * ((GameManager.Instance.m_Attacking ? MoveSpeed * 0.4f: _speed) * Time.deltaTime));
+            _controller.Move(finalDirection.normalized * ((GameManager.Instance.m_Attacking ? MoveSpeed * 0.4f : _speed) * Time.deltaTime));
 
             _animationBlendX = Mathf.Lerp(_animationBlendX, finalAnimationDirection.x, Time.deltaTime * SpeedChangeRate);
             _animationBlendY = Mathf.Lerp(_animationBlendY, finalAnimationDirection.z, Time.deltaTime * SpeedChangeRate);
@@ -428,20 +429,32 @@ namespace StarterAssets
         void AttackDelegate()
         {
             if (_hasAnimator)
-                if (_input.attack)
+                if (_input.attack && GameManager.Instance.m_Fighting)
                     if (!GameManager.Instance.m_Attacking)
-                    {
                         StartCoroutine(AttackCooldown(0.6f));
-                        _animator.SetTrigger(_animIDAttack);
-                    }
+        }
+
+        internal void TakeDamage()
+        {
+            _animator.SetTrigger(_animIDAttack);
+            GameManager.Instance.DeactivateSwordCollider();
+            GameManager.Instance.m_Attacking = false;
+            AudioManager.Instance.Play(AudioManager.PlayRandomFromList(ref AudioManager.Instance.m_AudioInfo.Damage.clips));
         }
 
         IEnumerator AttackCooldown(float _coolDownDuration)
         {
+            _animator.SetTrigger(_animIDAttack);
+
             GameManager.Instance.ActivateSwordCollider();
             GameManager.Instance.m_Attacking = true;
 
-            yield return new WaitForSeconds(_coolDownDuration);
+            yield return new WaitForSeconds(0.2f);
+
+            AudioManager.Instance.Play(AudioManager.PlayRandomFromList(ref AudioManager.Instance.m_AudioInfo.Groan.clips));
+            AudioManager.Instance.Play(AudioManager.PlayRandomFromList(ref AudioManager.Instance.m_AudioInfo.Swoosh.clips));
+
+            yield return new WaitForSeconds(_coolDownDuration - 0.2f);
 
             GameManager.Instance.DeactivateSwordCollider();
             GameManager.Instance.m_Attacking = false;

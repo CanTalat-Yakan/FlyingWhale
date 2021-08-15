@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] internal AudioInfo m_AudioInfo;
     [SerializeField] internal AudioMixerGroup m_AmbientMixer;
     [SerializeField] internal AudioMixerGroup m_FXMixer;
-    AudioSource m_mainMusicSource;
+    AudioSource m_mainMusicSource, m_mainBattleSource;
     float m_volumeOffset = 100, m_tmpVolume = 14;
 
 
@@ -28,7 +28,7 @@ public class AudioManager : MonoBehaviour
         PlayMainMusic(0.14f);
     }
 
-    internal AudioSource Play(AudioClip _clip, bool _loop = false, float _volume = 1)
+    internal AudioSource Play(AudioClip _clip, bool _loop = false, float _volume = 1, float _pitch = 1)
     {
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
 
@@ -41,7 +41,7 @@ public class AudioManager : MonoBehaviour
         audioSource.dopplerLevel = 0;
         audioSource.reverbZoneMix = 1;
         audioSource.spatialBlend = 0;
-        audioSource.pitch = 1;
+        audioSource.pitch = _pitch;
         audioSource.Play();
         Destroy(audioSource, _clip.length);
 
@@ -102,7 +102,26 @@ public class AudioManager : MonoBehaviour
         audioSource.Play();
         m_mainMusicSource = audioSource;
     }
-    internal void StopMainMusic() { Destroy(m_mainMusicSource); }
+
+    internal void PlayBattleMusic(float _volume = 1)
+    {
+        if (m_mainBattleSource || m_AudioInfo.BattleMusic is null)
+            return;
+
+        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+
+        audioSource.clip = m_AudioInfo.BattleMusic;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.volume = m_tmpVolume = _volume;
+        audioSource.pitch = 1;
+        audioSource.loop = true;
+        audioSource.Play();
+        m_mainBattleSource = audioSource;
+    }
+    internal void StopMainMusic() { if (m_mainMusicSource != null) m_mainMusicSource.Stop(); }
+    internal void StopBattleMusic() { if (m_mainBattleSource != null) m_mainBattleSource.Stop(); }
+    internal void StartMainMusic() { if (m_mainMusicSource != null) m_mainMusicSource.Play(); }
+    internal void StartMainBattleMusic() { if (m_mainBattleSource != null) m_mainBattleSource.Play(); }
     internal void SetMainMusicVolume(float _percentage) { m_tmpVolume = _percentage; if (m_mainMusicSource) m_mainMusicSource.volume = _percentage * m_volumeOffset * 0.01f; }
     internal float GetMainMusicVolume() { return m_mainMusicSource ? m_mainMusicSource.volume : 0.14f; }
     internal void SetMainMusicVolumeOffset(float _percentage) { m_volumeOffset = _percentage; SetMainMusicVolume(m_tmpVolume); }

@@ -31,6 +31,7 @@ public class Cannon : Entity
             Destroy(Instantiate(m_projectilePrefab, transform.position, transform.localRotation, transform.parent.transform), 2);
             Destroy(Instantiate(m_muzzlePrefab, transform.position, transform.localRotation, transform.parent.transform), 2);
             StartCoroutine(SquishScale.Play(gameObject, GameManager.Instance.m_Curves.SquishSquash, 0.4f, 1));
+            AudioManager.Instance.Play(AudioManager.PlayRandomFromList(ref AudioManager.Instance.m_AudioInfo.Cannon.clips));
 
             yield return new WaitForSeconds(m_cooldownTime);
             yield return null;

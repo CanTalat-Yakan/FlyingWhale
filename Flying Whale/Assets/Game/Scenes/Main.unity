@@ -523,6 +523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a96e2e6bdbdfc0408c52d1a15f8b026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HIDEALLCANVAS: 0
   LOCKED: 0
   m_IgnoreLayer:
     serializedVersion: 2
@@ -881,6 +882,7 @@ GameObject:
   - component: {fileID: 644139759}
   - component: {fileID: 644139761}
   - component: {fileID: 644139760}
+  - component: {fileID: 644139762}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -944,6 +946,18 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+--- !u!114 &644139762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644139758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f97999be139b354ba7a71e60371d4dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &713805894
 GameObject:
   m_ObjectHideFlags: 0
@@ -1874,6 +1888,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_tmpro: {fileID: 1739263034}
   m_itemType: 1
+--- !u!1 &1923361807
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1923361809}
+  - component: {fileID: 1923361808}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1923361808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923361807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50c7894fb5f38774288f59492d1c8c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AudioInfo: {fileID: 11400000, guid: 5acf839a1ca4a794f9073bbd9b4f388d, type: 2}
+  m_AmbientMixer: {fileID: 0}
+  m_FXMixer: {fileID: 0}
+--- !u!4 &1923361809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923361807}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1984885362
 GameObject:
   m_ObjectHideFlags: 0

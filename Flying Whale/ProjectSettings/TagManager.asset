@@ -16,6 +16,7 @@ TagManager:
   - SpecialItemSpawnpoint
   - Turret
   - DirectionalLight
+  - Enemy
   layers:
   - Default
   - TransparentFX

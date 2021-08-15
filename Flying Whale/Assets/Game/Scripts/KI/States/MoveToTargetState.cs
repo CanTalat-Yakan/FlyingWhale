@@ -21,7 +21,6 @@ namespace Assets.Game.Scripts.KI.States
 		{
 			Vector3 directionToTarget = m_enemy.m_Destination - m_transform.position;
 			float directionSquaredToTarget = directionToTarget.sqrMagnitude;
-			Debug.Log(directionSquaredToTarget);
 			if (directionSquaredToTarget <= m_StoppingDistanceSquared)
 			{
 				return typeof(AttackTargetState);

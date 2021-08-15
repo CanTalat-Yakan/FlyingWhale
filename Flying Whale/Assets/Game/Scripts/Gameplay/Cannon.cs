@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cannon : MonoBehaviour
+public class Cannon : Entity
 {
     [SerializeField]
     private float m_cooldownTime;
@@ -17,6 +17,7 @@ public class Cannon : MonoBehaviour
 
     private void Start()
     {
+        //StateMashine, um Zielsuche zu unterstützen
         StartCoroutine(Shoot());
     }
 

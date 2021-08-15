@@ -37,7 +37,7 @@ namespace Assets.Game.Scripts.KI.States
 			GameObject[] foundTurrets = GameObject.FindGameObjectsWithTag("Turret");
 			if (foundTurrets.Length < 1)
 			{
-				//Search for Whale
+				foundTurrets = GameObject.FindGameObjectsWithTag("Player");
 			}
 			float MinDist = Mathf.Infinity;
 			Vector3 curPos = m_transform.position;

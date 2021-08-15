@@ -144,14 +144,14 @@ public class GameManager : MonoBehaviour
 
         m_animator.runtimeAnimatorController = m_combatAniController;
 
-        yield return new WaitUntil(() => m_animator.runtimeAnimatorController == m_combatAniController);
+        m_Fighting = true;
 
+        yield return new WaitUntil(() => m_animator.runtimeAnimatorController == m_combatAniController);
 
         GameObject sword = Instantiate(m_sword, Vector3.zero, Quaternion.identity, m_pivot.transform);
         sword.transform.localPosition = m_sword.transform.position;
         sword.transform.localRotation = m_sword.transform.rotation;
 
-        m_Fighting = true;
 
         yield return new WaitUntil(() => m_whaleTimeFinished);
 
@@ -252,10 +252,10 @@ public class GameManager : MonoBehaviour
 
             AudioManager.Instance.Play(AudioManager.Instance.m_AudioInfo.PanelClose);
 
-            if (SceneHandler.IsSceneLoaded("Island" + m_CurrentLevel))
-                AudioManager.Instance.PlayMainMusic();
             if (SceneHandler.IsSceneLoaded("Whale"))
-                AudioManager.Instance.PlayBattleMusic();
+                AudioManager.Instance.StartBattleMusic();
+            else
+                AudioManager.Instance.StartMainMusic();
         }
     }
 

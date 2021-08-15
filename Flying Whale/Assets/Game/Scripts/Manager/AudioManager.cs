@@ -121,7 +121,7 @@ public class AudioManager : MonoBehaviour
     internal void StopMainMusic() { if (m_mainMusicSource != null) m_mainMusicSource.Stop(); }
     internal void StopBattleMusic() { if (m_mainBattleSource != null) m_mainBattleSource.Stop(); }
     internal void StartMainMusic() { if (m_mainMusicSource != null) m_mainMusicSource.Play(); }
-    internal void StartMainBattleMusic() { if (m_mainBattleSource != null) m_mainBattleSource.Play(); }
+    internal void StartBattleMusic() { if (m_mainBattleSource != null) m_mainBattleSource.Play(); }
     internal void SetMainMusicVolume(float _percentage) { m_tmpVolume = _percentage; if (m_mainMusicSource) m_mainMusicSource.volume = _percentage * m_volumeOffset * 0.01f; }
     internal float GetMainMusicVolume() { return m_mainMusicSource ? m_mainMusicSource.volume : 0.14f; }
     internal void SetMainMusicVolumeOffset(float _percentage) { m_volumeOffset = _percentage; SetMainMusicVolume(m_tmpVolume); }

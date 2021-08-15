@@ -30,7 +30,8 @@ public class GameManager : MonoBehaviour
     internal int[] m_ItemCounter = new int[4];
     [SerializeField] bool m_specialItemPicked;
     [SerializeField] bool m_whaleTimeFinished;
-    [SerializeField] internal bool m_fighting;
+    [SerializeField] internal bool m_Fighting;
+    [SerializeField] internal bool m_Attacking;
     IEnumerator m_currentCoroutine;
 
 
@@ -55,10 +56,6 @@ public class GameManager : MonoBehaviour
         m_CurrentLevel = 1;
 
         StartCoroutine(m_currentCoroutine = StartIsland());
-
-        yield return new WaitForSeconds(5);
-
-        GameOver();
 
         yield return new WaitUntil(() => m_CurrentLevel == 2);
 
@@ -127,7 +124,7 @@ public class GameManager : MonoBehaviour
 
         m_animator.runtimeAnimatorController = m_combatAniController;
         m_WindStrength = 0.4f;
-        m_fighting = true;
+        m_Fighting = true;
 
         yield return new WaitUntil(() => m_whaleTimeFinished);
 
@@ -237,16 +234,18 @@ public class GameManager : MonoBehaviour
     internal void PickedItem(int _i) { m_ItemCounter[_i]++; }
 
     internal void PickedItemSpecial() { m_specialItemPicked = true; }
-    internal void WhaleTimeFinished() { m_whaleTimeFinished = true; }
+    internal void WhaleTimeFinished() { m_whaleTimeFinished = true; m_Fighting = false; }
 
     internal void ResetPlayer()
     {
         m_player.transform.position = Vector3.zero;
         m_player.transform.rotation = Quaternion.identity;
     }
-    internal void DeactivateCharController() { m_controller.enabled = false; }
     internal void ActivateCharController() { m_controller.enabled = true; }
+    internal void DeactivateCharController() { m_controller.enabled = false; }
 
+    internal void ActivateSwordCollider() { m_sword.tag = "Untagged"; }
+    internal void DeactivateSwordCollider() { m_sword.tag = "Sword"; }
 
     internal RaycastHit HitRayCast(float _maxDistance, Ray? _ray = null)
     {

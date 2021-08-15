@@ -21,16 +21,14 @@ public class DustStormLevel : MonoBehaviour
                 m_dust.Clear();
                 m_trail.Clear();
             }
-            else
-            {
-                m_dust.Play();
-                m_module = m_dust.emission;
-                m_module.rateOverTime = m_curve.Evaluate(GameManager.Instance.m_WindStrength) * 110;
 
-                m_trail.Play();
-                m_module = m_trail.emission;
-                m_module.rateOverTime = m_curve.Evaluate(GameManager.Instance.m_WindStrength) * 80;
-            }
+            m_dust.Play();
+            m_module = m_dust.emission;
+            m_module.rateOverTime = m_curve.Evaluate(GameManager.Instance.m_WindStrength) * 110;
+
+            m_trail.Play();
+            m_module = m_trail.emission;
+            m_module.rateOverTime = m_curve.Evaluate(GameManager.Instance.m_WindStrength) * 80;
         }
 
         m_tmp = GameManager.Instance.m_WindStrength;

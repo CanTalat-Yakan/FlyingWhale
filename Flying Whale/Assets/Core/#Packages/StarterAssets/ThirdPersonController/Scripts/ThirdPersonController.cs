@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
@@ -124,7 +125,7 @@ namespace StarterAssets
         {
             _hasAnimator = TryGetComponent(out _animator);
 
-            if (!GameManager.Instance.m_fighting)
+            if (!GameManager.Instance.m_Fighting)
             {
                 JumpAndGravity();
                 GroundedCheck();
@@ -136,7 +137,7 @@ namespace StarterAssets
 
         private void LateUpdate()
         {
-            if (!GameManager.Instance.m_fighting)
+            if (!GameManager.Instance.m_Fighting)
                 CameraRotation();
         }
 
@@ -320,6 +321,7 @@ namespace StarterAssets
         }
 
         Vector3 point;
+        Vector3 pointtmp;
         private void CombatMove()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
@@ -365,11 +367,23 @@ namespace StarterAssets
                 _targetRotation = Mathf.Atan2(point.x - transform.position.x, point.z - transform.position.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation - 90, ref _rotationVelocity, RotationSmoothTime);
 
+                if (pointtmp != point)
+                    // rotate to face input direction relative to camera position
+                    transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+
+                pointtmp = point;
+            }
+
+            if (_input.look != Vector2.zero)
+            {
+                _targetRotation = Mathf.Atan2(_input.look.x, -_input.look.y) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, GameManager.Instance.m_Attacking ? 0.1f : RotationSmoothTime);
+
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
 
-
+            if (GameManager.Instance.m_Attacking) return;
 
 
             // normalise input direction
@@ -403,7 +417,24 @@ namespace StarterAssets
         {
             if (_hasAnimator)
                 if (_input.attack)
-                    _animator.SetTrigger(_animIDAttack);
+                    if (!GameManager.Instance.m_Attacking)
+                    {
+                        StartCoroutine(AttackCooldown(0.6f));
+                        _animator.SetTrigger(_animIDAttack);
+                    }
+        }
+
+        IEnumerator AttackCooldown(float _coolDownDuration)
+        {
+            GameManager.Instance.ActivateSwordCollider();
+            GameManager.Instance.m_Attacking = true;
+
+            yield return new WaitForSeconds(_coolDownDuration);
+
+            GameManager.Instance.DeactivateSwordCollider();
+            GameManager.Instance.m_Attacking = false;
+
+            yield return null;
         }
 
         private void OnDrawGizmosSelected()

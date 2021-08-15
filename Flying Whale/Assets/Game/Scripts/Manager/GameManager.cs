@@ -9,12 +9,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     internal int m_CurrentLevel { get; private set; }
 
+    [SerializeField] internal bool HIDEALLCANVAS = false;
     [SerializeField] internal bool LOCKED = false;
     [SerializeField] internal LayerMask m_IgnoreLayer;
     [SerializeField] internal Camera m_MainCamera;
     [SerializeField] internal CinemachineVirtualCamera m_CMVCamera;
     [SerializeField] internal TweenCurves m_Curves;
     [SerializeField] internal Vector3 m_PlayerPosition { get => m_controller.transform.position; }
+
     [SerializeField] StarterAssets.ThirdPersonController m_controller;
     [SerializeField] Animator m_animator;
     [SerializeField] RuntimeAnimatorController m_combatAniController;
@@ -25,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Material m_day;
     [SerializeField] Material m_night;
     [SerializeField] AudioSource m_wind;
+    [SerializeField] FollowPlayer m_windPS;
+    [SerializeField] Canvas m_ressourceCanvas;
     [Range(0, 1)]
     [SerializeField] internal float m_WindStrength;
     [Space]
@@ -113,9 +117,6 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitUntil(() => SceneHandler.IsSceneLoaded("Whale"));
 
-        GameObject sword = Instantiate(m_sword, Vector3.zero, Quaternion.identity, m_pivot.transform);
-        sword.transform.localPosition = Vector3.zero;
-
         ResetPlayer();
 
         if (m_CurrentLevel % 1 == 0)
@@ -123,13 +124,31 @@ public class GameManager : MonoBehaviour
         else
             SetDay();
 
+        m_windPS.m_Offset = Vector3.down * 7;
+        m_WindStrength = 0.15f;
+
+        yield return new WaitForSeconds(10);
+
+        m_ressourceCanvas.targetDisplay = 2;
+
         m_animator.runtimeAnimatorController = m_combatAniController;
-        m_WindStrength = 0.4f;
+
+        yield return new WaitUntil(() => m_animator.runtimeAnimatorController == m_combatAniController);
+
+        GameObject sword = Instantiate(m_sword, Vector3.zero, Quaternion.identity, m_pivot.transform);
+        sword.transform.localPosition = Vector3.zero;
+
         m_Fighting = true;
 
         yield return new WaitUntil(() => m_whaleTimeFinished);
 
         SceneHandler.UnloadScene("Whale");
+
+        m_windPS.m_Offset = Vector3.zero;
+
+        m_ressourceCanvas.targetDisplay = 0;
+
+        Destroy(sword);
 
         m_whaleTimeFinished = false;
         ResetPlayer();

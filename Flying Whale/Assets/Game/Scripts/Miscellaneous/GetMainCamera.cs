@@ -9,6 +9,6 @@ public class GetMainCamera : MonoBehaviour
     void Start()
     {
         if (m_camera is null)
-            GetComponent<Canvas>().worldCamera = Camera.main;
+            GetComponent<Canvas>().worldCamera = (m_camera = GameManager.Instance.m_MainCamera);
     }
 }

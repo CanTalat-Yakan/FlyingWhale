@@ -19,9 +19,6 @@ public class ScaleOverDistance : MonoBehaviour
     {
         if (GameManager.Instance)
             if (GameManager.Instance.m_MainCamera)
-            {
-                float dis = Vector3.Distance(GameManager.Instance.m_MainCamera.transform.position, transform.position);
-                transform.localScale = m_initialScale * dis * m_scale * (1 - Mathf.Clamp(dis / m_distance, 0 , m_minScale));
-            }
+                transform.localScale = m_initialScale * Vector3.Distance(GameManager.Instance.m_MainCamera.transform.position, transform.position) * m_scale;
     }
 }

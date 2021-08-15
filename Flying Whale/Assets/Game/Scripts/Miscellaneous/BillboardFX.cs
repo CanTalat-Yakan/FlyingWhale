@@ -15,6 +15,6 @@ public class BillboardFX : MonoBehaviour
     {
         if (GameManager.Instance)
             if (GameManager.Instance.m_MainCamera)
-                transform.rotation = Quaternion.LookRotation(transform.position - GameManager.Instance.m_MainCamera.transform.position) * originalRotation;
+                transform.forward = GameManager.Instance.m_MainCamera.transform.forward;
     }
 }

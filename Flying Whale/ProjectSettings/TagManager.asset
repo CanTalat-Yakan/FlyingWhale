@@ -15,6 +15,7 @@ TagManager:
   - Spawnpoint
   - SpecialItemSpawnpoint
   - Turret
+  - DirectionalLight
   layers:
   - Default
   - TransparentFX

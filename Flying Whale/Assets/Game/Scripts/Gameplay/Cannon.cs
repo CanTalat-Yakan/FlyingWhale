@@ -27,9 +27,8 @@ public class Cannon : MonoBehaviour
         {
             yield return new WaitForSeconds(Random.value);
 
-            Instantiate(m_projectilePrefab, transform.position, transform.localRotation, transform)
-                .GetComponent<Rigidbody>().AddForce(transform.forward * 20, ForceMode.Impulse);
-            Destroy(Instantiate(m_muzzlePrefab, transform.position, transform.localRotation, transform), 2);
+            Destroy(Instantiate(m_projectilePrefab, transform.position, transform.localRotation, transform.parent.transform), 2);
+            Destroy(Instantiate(m_muzzlePrefab, transform.position, transform.localRotation, transform.parent.transform), 2);
             StartCoroutine(SquishScale.Play(gameObject, GameManager.Instance.m_Curves.SquishSquash, 0.4f, 1));
 
             yield return new WaitForSeconds(m_cooldownTime);

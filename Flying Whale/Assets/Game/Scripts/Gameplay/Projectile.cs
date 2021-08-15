@@ -14,6 +14,6 @@ public class Projectile : MonoBehaviour
     private void Start()
     {
         m_rigidbody.AddForce(transform.forward * 20, ForceMode.Impulse);
-        Destroy(this.gameObject, 1.5f);
+        Destroy(this.gameObject, 2);
     }
 }

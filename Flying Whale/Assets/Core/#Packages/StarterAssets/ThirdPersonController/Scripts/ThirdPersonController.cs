@@ -358,7 +358,7 @@ namespace StarterAssets
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            //if (_input.move != Vector2.zero)
+            if (GameManager.Instance.BoolRayCast(20, Camera.main.ScreenPointToRay(Input.mousePosition)))
             {
                 point = GameManager.Instance.HitRayCast(20, Camera.main.ScreenPointToRay(Input.mousePosition)).point;
 

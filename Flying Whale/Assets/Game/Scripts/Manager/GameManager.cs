@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject m_player;
     [SerializeField] GameObject m_pivot;
     [SerializeField] GameObject m_sword;
+    [SerializeField] Material m_day;
+    [SerializeField] Material m_night;
     [Range(0, 1)]
     [SerializeField] internal float m_WindStrength;
     [Space]
@@ -29,6 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] bool m_specialItemPicked;
     [SerializeField] bool m_whaleTimeFinished;
     [SerializeField] internal bool m_fighting;
+    IEnumerator m_currentCoroutine;
 
 
     void Awake()
@@ -51,26 +54,41 @@ public class GameManager : MonoBehaviour
     {
         m_CurrentLevel = 1;
 
-        StartCoroutine(StartIsland());
+        StartCoroutine(m_currentCoroutine = StartIsland());
+
+        yield return new WaitForSeconds(5);
+
+        GameOver();
 
         yield return new WaitUntil(() => m_CurrentLevel == 2);
 
-        StartCoroutine(StartIsland());
+        m_CurrentLevel = 1;
+        StartCoroutine(m_currentCoroutine = StartIsland());
 
-        yield return new WaitUntil(() => m_CurrentLevel == 3);
+        yield return new WaitUntil(() => m_CurrentLevel == 2);
 
-        StartCoroutine(StartIsland());
+        m_CurrentLevel = 1;
+        StartCoroutine(m_currentCoroutine = StartIsland());
 
         yield return null;
     }
 
     IEnumerator StartIsland()
     {
+        SceneHandler.AddScene("Island" + m_CurrentLevel);
+
+        yield return new WaitUntil(() => SceneHandler.IsSceneLoaded("Island" + m_CurrentLevel));
+
         m_animator.runtimeAnimatorController = m_explorerAniController;
 
         m_WindStrength = 0;
 
-        SceneHandler.AddScene("Island" + m_CurrentLevel);
+        ResetPlayer();
+
+        if (m_CurrentLevel % 1 == 0)
+            SetDay();
+        else
+            SetNight();
 
         yield return new WaitWhile(() => TimelineManager.Instance.m_IsPlaying);
         TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
@@ -85,7 +103,7 @@ public class GameManager : MonoBehaviour
         m_specialItemPicked = false;
         ResetPlayer();
 
-        StartCoroutine(StartWhalePhase());
+        StartCoroutine(m_currentCoroutine = StartWhalePhase());
 
 
         yield return null;
@@ -93,15 +111,23 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartWhalePhase()
     {
+        SceneHandler.AddScene("Whale");
+
+        yield return new WaitUntil(() => SceneHandler.IsSceneLoaded("Whale"));
+
         GameObject sword = Instantiate(m_sword, Vector3.zero, Quaternion.identity, m_pivot.transform);
         sword.transform.localPosition = Vector3.zero;
 
-        m_animator.runtimeAnimatorController = m_combatAniController;
+        ResetPlayer();
 
+        if (m_CurrentLevel % 1 == 0)
+            SetNight();
+        else
+            SetDay();
+
+        m_animator.runtimeAnimatorController = m_combatAniController;
         m_WindStrength = 0.4f;
         m_fighting = true;
-
-        SceneHandler.AddScene("Whale");
 
         yield return new WaitUntil(() => m_whaleTimeFinished);
 
@@ -115,6 +141,45 @@ public class GameManager : MonoBehaviour
 
         yield return null;
     }
+    IEnumerator Respawn()
+    {
+
+        SceneHandler.UnloadScene("Island" + m_CurrentLevel);
+
+        yield return new WaitWhile(() => SceneHandler.IsSceneLoaded("Island" + m_CurrentLevel));
+
+        SceneHandler.AddScene("Island" + m_CurrentLevel);
+
+        yield return new WaitUntil(() => SceneHandler.IsSceneLoaded("Island" + m_CurrentLevel));
+
+        m_animator.runtimeAnimatorController = m_explorerAniController;
+
+        m_WindStrength = 0;
+
+        ResetPlayer();
+
+        if (m_CurrentLevel % 1 == 0)
+            SetDay();
+        else
+            SetNight();
+
+        m_specialItemPicked = false;
+
+        yield return new WaitUntil(() => m_specialItemPicked);
+
+        TimelineManager.Instance.Play(TimelineManager.Instance.m_Ending);
+        yield return new WaitWhile(() => TimelineManager.Instance.m_IsPlaying);
+
+        SceneHandler.UnloadScene("Island" + m_CurrentLevel);
+
+        m_specialItemPicked = false;
+        ResetPlayer();
+
+        StartCoroutine(m_currentCoroutine = StartWhalePhase());
+
+
+        yield return null;
+    }
 
     void Update()
     {
@@ -124,7 +189,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = LOCKED ? 0 : 1;
     }
 
-    public void GameOver() { Debug.Log("Game Over"); }
+    public void GameOver() { StopCoroutine(m_currentCoroutine); StartCoroutine(Respawn()); }
 
     #region Predefined 
     void OptionsOverlay()
@@ -149,6 +214,24 @@ public class GameManager : MonoBehaviour
             if (SceneHandler.IsSceneLoaded("Options"))
                 SceneHandler.UnloadScene("Options");
         }
+    }
+
+    void SetNight()
+    {
+        RenderSettings.skybox = m_night;
+        GameObject.FindGameObjectWithTag("DirectionalLight").GetComponent<Light>().intensity = 0.2f;
+    }
+    void SetDay()
+    {
+        RenderSettings.skybox = m_day;
+        GameObject.FindGameObjectWithTag("DirectionalLight").GetComponent<Light>().intensity = 1;
+    }
+
+    internal void SetDustStormWithTimer(float _timerDuration, float _currentTimer)
+    {
+        m_WindStrength.Remap(
+            0, _currentTimer, 
+            0, _timerDuration);
     }
 
     internal void PickedItem(int _i) { m_ItemCounter[_i]++; }

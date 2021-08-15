@@ -196,7 +196,7 @@ namespace StarterAssets
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
             float speedOffset = 0.1f;
-            float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
+            float inputMagnitude = _input.analogMovement ? Mathf.Min(_input.move.magnitude, 1) : 1f;
 
             // accelerate or decelerate to target speed
             if (currentHorizontalSpeed < targetSpeed - speedOffset || currentHorizontalSpeed > targetSpeed + speedOffset)
@@ -334,7 +334,7 @@ namespace StarterAssets
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
             float speedOffset = 0.1f;
-            float inputMagnitude = _input.analogMovement ? _input.move.magnitude: 1f;
+            float inputMagnitude = _input.analogMovement ? Mathf.Min(_input.move.magnitude, 1) : 1f;
             inputMagnitude = inputMagnitude + (!_input.sprint ? -0.3f : 0);
 
             // accelerate or decelerate to target speed
@@ -370,7 +370,7 @@ namespace StarterAssets
             {
                 _animator.SetFloat(_animIDMotionX, _animationBlendX);
                 _animator.SetFloat(_animIDMotionZ, _animationBlendY);
-                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                _animator.SetFloat(_animIDMotionSpeed, inputMagnitude + (!_input.sprint ? - 0.25f : 0));
             }
         }
 

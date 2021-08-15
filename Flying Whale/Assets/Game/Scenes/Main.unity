@@ -241,7 +241,7 @@ MonoBehaviour:
   m_explorerAniController: {fileID: 9100000, guid: 40db3173a05ae3242b1c182a09b0a183, type: 2}
   m_player: {fileID: 2008529345}
   m_pivot: {fileID: 1215972573}
-  m_sword: {fileID: 2106446786696130667, guid: 4d95d1f626971c74d930a3c8be04d3b7, type: 3}
+  m_sword: {fileID: 2106446786696130667, guid: 8c80b06a57677ec4ea1dd15fca5f1618, type: 3}
   m_WindStrength: 0
   m_specialItemPicked: 0
   m_whaleTimeFinished: 0

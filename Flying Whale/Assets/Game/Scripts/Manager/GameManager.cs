@@ -93,7 +93,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartWhalePhase()
     {
-        GameObject sword = Instantiate(m_sword, m_pivot.transform.position, Quaternion.Euler(90, 0, 0), m_pivot.transform);
+        GameObject sword = Instantiate(m_sword, Vector3.zero, Quaternion.identity, m_pivot.transform);
+        sword.transform.localPosition = Vector3.zero;
 
         m_animator.runtimeAnimatorController = m_combatAniController;
 

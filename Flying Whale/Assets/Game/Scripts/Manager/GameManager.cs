@@ -7,15 +7,18 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    internal int m_CurrentLevel { get; private set; }
 
     [SerializeField] internal bool LOCKED = false;
     [SerializeField] internal LayerMask m_IgnoreLayer;
     [SerializeField] internal Camera m_MainCamera;
     [SerializeField] internal CinemachineVirtualCamera m_CMVCamera;
+    [SerializeField] internal TweenCurves m_Curves;
+    [SerializeField] internal Vector3 m_PlayerPosition { get => m_controller.transform.position; }
     [SerializeField] StarterAssets.ThirdPersonController m_controller;
     [SerializeField] Animator m_animator;
-    [SerializeField] RuntimeAnimatorController m_comAni;
-    [SerializeField] RuntimeAnimatorController m_expAni;
+    [SerializeField] RuntimeAnimatorController m_combatAniController;
+    [SerializeField] RuntimeAnimatorController m_explorerAniController;
     [SerializeField] GameObject m_player;
     [SerializeField] GameObject m_pivot;
     [SerializeField] GameObject m_sword;
@@ -46,38 +49,67 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Loop()
     {
+        m_CurrentLevel = 1;
+
+        StartCoroutine(StartIsland());
+
+        yield return new WaitUntil(() => m_CurrentLevel == 2);
+
+        StartCoroutine(StartIsland());
+
+        yield return new WaitUntil(() => m_CurrentLevel == 3);
+
+        StartCoroutine(StartIsland());
+
+        yield return null;
+    }
+
+    IEnumerator StartIsland()
+    {
+        m_animator.runtimeAnimatorController = m_explorerAniController;
+
         m_WindStrength = 0;
-        SceneHandler.AddScene("Island1");
+
+        SceneHandler.AddScene("Island" + m_CurrentLevel);
+
         yield return new WaitWhile(() => TimelineManager.Instance.m_IsPlaying);
         TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
+
         yield return new WaitUntil(() => m_specialItemPicked);
-        TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
+
+        TimelineManager.Instance.Play(TimelineManager.Instance.m_Ending);
         yield return new WaitWhile(() => TimelineManager.Instance.m_IsPlaying);
-        SceneHandler.UnloadScene("Island1");
+
+        SceneHandler.UnloadScene("Island" + m_CurrentLevel);
+
         m_specialItemPicked = false;
         ResetPlayer();
 
-        m_animator.runtimeAnimatorController = m_comAni;
+        StartCoroutine(StartWhalePhase());
+
+
+        yield return null;
+    }
+
+    IEnumerator StartWhalePhase()
+    {
         GameObject sword = Instantiate(m_sword, m_pivot.transform.position, Quaternion.Euler(90, 0, 0), m_pivot.transform);
+
+        m_animator.runtimeAnimatorController = m_combatAniController;
+
+        m_WindStrength = 0.4f;
         m_fighting = true;
 
-
-        m_WindStrength = 0.15f;
         SceneHandler.AddScene("Whale");
+
         yield return new WaitUntil(() => m_whaleTimeFinished);
+
         SceneHandler.UnloadScene("Whale");
+
         m_whaleTimeFinished = false;
         ResetPlayer();
 
-        m_animator.runtimeAnimatorController = m_expAni;
-        Destroy(sword);
-        m_fighting = false;
-
-
-        m_WindStrength = 0;
-        SceneHandler.AddScene("Island1");
-        TimelineManager.Instance.Play(TimelineManager.Instance.m_Beginning);
-        yield return new WaitUntil(() => m_specialItemPicked);
+        m_CurrentLevel++;
 
 
         yield return null;

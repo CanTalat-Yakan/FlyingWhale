@@ -17,7 +17,7 @@ public class Cannon : Entity
 
     private void Start()
     {
-        //StateMashine, um Zielsuche zu unterstützen
+        //StateMashine, um Zielsuche zu unterstï¿½tzen
         StartCoroutine(Shoot());
     }
 
@@ -26,6 +26,7 @@ public class Cannon : Entity
     {
         while (m_canShoot)
         {
+            yield return new WaitUntil(() => GameManager.Instance.m_Fighting);
             yield return new WaitForSeconds(Random.value);
 
             Destroy(Instantiate(m_projectilePrefab, transform.position, transform.localRotation, transform.parent.transform), 2);

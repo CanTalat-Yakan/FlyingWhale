@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/Options.unity
     guid: 122260943f5bb5d4196f5642d6fb8c78
   - enabled: 1
-    path: Assets/Game/Scenes/Whale.unity
+    path: Assets/Game/Scenes/Whale/Whale.unity
     guid: 1cc7d7434e3b62a43890936339f9d700
   - enabled: 1
     path: Assets/Game/Scenes/Islands/Island1.unity

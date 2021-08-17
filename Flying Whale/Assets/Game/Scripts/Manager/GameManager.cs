@@ -295,8 +295,10 @@ public class GameManager : MonoBehaviour
 
     internal void ResetPlayer()
     {
+        DeactivateCharController();
         m_player.transform.position = Vector3.zero;
         m_player.transform.rotation = Quaternion.identity;
+        ActivateCharController();
     }
     internal void ActivateCharController() { m_controller.enabled = true; }
     internal void DeactivateCharController() { m_controller.enabled = false; }

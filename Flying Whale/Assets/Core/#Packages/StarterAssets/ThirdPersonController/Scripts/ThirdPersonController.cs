@@ -123,8 +123,19 @@ namespace StarterAssets
             StartCoroutine(FootSteps());
         }
 
+        void TryAssign(){
+            if(_controller is null)
+                _controller = GetComponent<CharacterController>();
+            if(_input is null)
+                _input = GetComponent<StarterAssetsInputs>();
+            if(_input.AttackAction is null)
+                _input.AttackAction = AttackDelegate;
+        }
+
         private void Update()
         {
+            TryAssign();
+            
             _hasAnimator = TryGetComponent(out _animator);
 
             if (!GameManager.Instance.m_Fighting)
@@ -334,6 +345,7 @@ bool tmp;
         Vector3 point;
         Vector3 tmpMousePos;
         int currentInput;
+        GameObject pivot;
         private void CombatMove()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
@@ -377,7 +389,8 @@ bool tmp;
                     point = GameManager.Instance.HitRayCast(20, Camera.main.ScreenPointToRay(Input.mousePosition)).point;
 
                     _targetRotation = Mathf.Atan2(point.x - transform.position.x, point.z - transform.position.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
-                    float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation - 90, ref _rotationVelocity, RotationSmoothTime);
+                    if(pivot is null) pivot = GameObject.FindGameObjectWithTag("Pivot");
+                    float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation - (pivot.transform.rotation.eulerAngles.y % 360) - 90, ref _rotationVelocity, RotationSmoothTime);
 
                     currentInput = 0;
                     transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);

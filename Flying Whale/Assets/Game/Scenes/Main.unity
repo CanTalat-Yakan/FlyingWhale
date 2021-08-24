@@ -2022,6 +2022,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6098125462647027312, guid: 1023ba21f29980249b383950542553ed, type: 3}
   m_PrefabInstance: {fileID: 1780715401}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2008529346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008529345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42872ef761fe49a4b8ad2c112005fa0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2008529352 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6368526505022364308, guid: 1023ba21f29980249b383950542553ed, type: 3}
